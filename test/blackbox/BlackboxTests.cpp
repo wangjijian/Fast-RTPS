@@ -58,6 +58,12 @@ void default_send_print(const Type&)
 }
 
 template<>
+void default_send_print(const StringType&)
+{
+    std::cout << "Sent StringType" << std::endl;
+}
+
+template<>
 void default_send_print(const HelloWorld& hello)
 {
     std::cout << "Sent HelloWorld " << hello.index() << std::endl;
@@ -1708,7 +1714,7 @@ BLACKBOXTEST(BlackBox, PubSubOutLocatorSelection){
     Locator_t LocatorBuffer;
 
     LocatorBuffer.kind = LOCATOR_KIND_UDPv4;
-    LocatorBuffer.port = 31337;
+    LocatorBuffer.set_port(31337);
 
     WriterOutLocators.push_back(LocatorBuffer);
 
@@ -1851,13 +1857,13 @@ BLACKBOXTEST(BlackBox, StaticDiscovery)
     Locator_t LocatorBuffer;
 
     LocatorBuffer.kind = LOCATOR_KIND_UDPv4;
-    LocatorBuffer.port = W_UNICAST_PORT_RANDOM_NUMBER;
+    LocatorBuffer.set_port(W_UNICAST_PORT_RANDOM_NUMBER);
     LocatorBuffer.set_IP4_address(127,0,0,1);
     WriterUnicastLocators.push_back(LocatorBuffer);
 
     LocatorList_t WriterMulticastLocators;
 
-    LocatorBuffer.port = MULTICAST_PORT_RANDOM_NUMBER;
+    LocatorBuffer.set_port(MULTICAST_PORT_RANDOM_NUMBER);
     WriterMulticastLocators.push_back(LocatorBuffer);
 
     writer.history_kind(eprosima::fastrtps::KEEP_ALL_HISTORY_QOS).
@@ -1873,12 +1879,12 @@ BLACKBOXTEST(BlackBox, StaticDiscovery)
 
     LocatorList_t ReaderUnicastLocators;
 
-    LocatorBuffer.port = R_UNICAST_PORT_RANDOM_NUMBER;
+    LocatorBuffer.set_port(R_UNICAST_PORT_RANDOM_NUMBER);
     ReaderUnicastLocators.push_back(LocatorBuffer);
 
     LocatorList_t ReaderMulticastLocators;
 
-    LocatorBuffer.port = MULTICAST_PORT_RANDOM_NUMBER;
+    LocatorBuffer.set_port(MULTICAST_PORT_RANDOM_NUMBER);
     ReaderMulticastLocators.push_back(LocatorBuffer);
 
 
@@ -2135,10 +2141,10 @@ BLACKBOXTEST(BlackBox, LocalInitialPeers)
     Locator_t loc_initial_peer, loc_default_unicast;
     LocatorList_t reader_initial_peers;
     loc_initial_peer.set_IP4_address(127, 0, 0, 1);
-    loc_initial_peer.port = port;
+    loc_initial_peer.set_port(port);
     reader_initial_peers.push_back(loc_initial_peer);
     LocatorList_t reader_default_unicast_locator;
-    loc_default_unicast.port = port + 1;
+    loc_default_unicast.set_port(port + 1);
     reader_default_unicast_locator.push_back(loc_default_unicast);
 
     reader.metatraffic_unicast_locator_list(reader_default_unicast_locator).
@@ -2148,10 +2154,10 @@ BLACKBOXTEST(BlackBox, LocalInitialPeers)
     ASSERT_TRUE(reader.isInitialized());
 
     LocatorList_t writer_initial_peers;
-    loc_initial_peer.port = port + 1;
+    loc_initial_peer.set_port(port + 1);
     writer_initial_peers.push_back(loc_initial_peer);
     LocatorList_t writer_default_unicast_locator;
-    loc_default_unicast.port = port;
+    loc_default_unicast.set_port(port);
     writer_default_unicast_locator.push_back(loc_default_unicast);
 
     writer.metatraffic_unicast_locator_list(writer_default_unicast_locator).
