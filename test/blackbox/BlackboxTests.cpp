@@ -1806,6 +1806,7 @@ BLACKBOXTEST(BlackBox, PubSubMoreThan256Unacknowledged)
 
 BLACKBOXTEST(BlackBox, StaticDiscovery)
 {
+    //Log::SetVerbosity(Log::Info);
     char* value = nullptr;
     std::string TOPIC_RANDOM_NUMBER;
     std::string W_UNICAST_PORT_RANDOM_NUMBER_STR;
